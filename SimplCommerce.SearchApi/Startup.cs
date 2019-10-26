@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Polly;
 using SimplCommerce.SearchApi.HttpManager;
 using SimplCommerce.SearchApi.Configurations;
+using SimplCommerce.QueryBuilder;
 
 namespace SimplCommerce.SearchApi
 {
@@ -28,14 +29,25 @@ namespace SimplCommerce.SearchApi
             IAsyncPolicy<HttpResponseMessage> httWaitAndpRetryPolicy =
                Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
                    .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(retryAttempt));
-            var elasticConfig = Configuration.GetSection("ElasticSettings").Get<ElasticSettings>();
+            var elasticConfigSetting = Configuration.GetSection("ElasticSettings");
+            var elasticConfig= elasticConfigSetting.Get<ElasticSettings>();
+            services.Configure<ElasticSettings>(elasticConfigSetting);
 
             services.AddHttpClient<IElasticClient, ElasticClient>(client =>
             {
                 client.WithUserInfo(elasticConfig.UserId, elasticConfig.Password);
-                client.Timeout = new TimeSpan(0,0,2);
+                client.Timeout = new TimeSpan(0,0,50);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
             }).AddPolicyHandler(httWaitAndpRetryPolicy);
 
+            services.AddTransient(typeof(ISearchQueryBuilder), typeof(SearchQueryBuilder));
+
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
+                loggingBuilder.AddConsole();
+                loggingBuilder.AddDebug();
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -47,10 +59,9 @@ namespace SimplCommerce.SearchApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddDebug();
-            loggerFactory.AddConsole();
+            
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyMethod()

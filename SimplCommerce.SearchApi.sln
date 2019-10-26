@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplCommerce.SearchApi", "SimplCommerce.SearchApi\SimplCommerce.SearchApi.csproj", "{23C3428B-40EE-4B19-8AFF-D3AECED7B941}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimplCommerce.SearchApi", "SimplCommerce.SearchApi\SimplCommerce.SearchApi.csproj", "{23C3428B-40EE-4B19-8AFF-D3AECED7B941}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimplCommerce.QueryBuilder", "SimplCommerce.QueryBuilder\SimplCommerce.QueryBuilder.csproj", "{49EE7758-51D3-43C2-A4E4-88A212F621D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{20BFEC3F-CFFD-47F9-9E6A-48AB755DF9C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplCommerce.QueryBuilder.Tests", "SimplCommerce.QueryBuilder.Tests\SimplCommerce.QueryBuilder.Tests.csproj", "{AEEB3D8B-CFDF-4C98-95D7-4F67633AA2F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,20 @@ Global
 		{23C3428B-40EE-4B19-8AFF-D3AECED7B941}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23C3428B-40EE-4B19-8AFF-D3AECED7B941}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23C3428B-40EE-4B19-8AFF-D3AECED7B941}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49EE7758-51D3-43C2-A4E4-88A212F621D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49EE7758-51D3-43C2-A4E4-88A212F621D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49EE7758-51D3-43C2-A4E4-88A212F621D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49EE7758-51D3-43C2-A4E4-88A212F621D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEEB3D8B-CFDF-4C98-95D7-4F67633AA2F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEEB3D8B-CFDF-4C98-95D7-4F67633AA2F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEEB3D8B-CFDF-4C98-95D7-4F67633AA2F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEEB3D8B-CFDF-4C98-95D7-4F67633AA2F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AEEB3D8B-CFDF-4C98-95D7-4F67633AA2F5} = {20BFEC3F-CFFD-47F9-9E6A-48AB755DF9C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DD07824C-012D-47D1-A123-05402CA011A4}

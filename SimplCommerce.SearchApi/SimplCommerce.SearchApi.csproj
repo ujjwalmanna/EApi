@@ -22,8 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SimplCommerce.QueryBuilder\SimplCommerce.QueryBuilder.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="SimplCommerce.Module.Catalog">
       <HintPath>..\..\..\..\..\..\..\Study\Practise-Learn\sample\practise\src\Modules\SimplCommerce.Module.Search\bin\Debug\netcoreapp2.1\SimplCommerce.Module.Catalog.dll</HintPath>
+    </Reference>
+    <Reference Include="SimplCommerce.Module.Core">
+      <HintPath>..\..\..\..\..\..\..\Study\Practise-Learn\sample\practise\src\Modules\SimplCommerce.Module.Core\bin\Debug\netcoreapp2.1\SimplCommerce.Module.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 
