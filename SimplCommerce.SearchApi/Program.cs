@@ -42,7 +42,11 @@ namespace SimplCommerce.SearchApi
                           config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                               .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
                           config.AddEnvironmentVariables();
-                      }).UseStartup<Startup>()
+                      })
+                    .UseKestrel()
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseIISIntegration()
+                    .UseStartup<Startup>()
                     .UseSerilog((provider, ContextBoundObject, loggerConfig) =>
                     {
                         var name = Assembly.GetExecutingAssembly().GetName();

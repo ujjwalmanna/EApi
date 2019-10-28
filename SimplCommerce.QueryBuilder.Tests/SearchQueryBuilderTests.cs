@@ -187,8 +187,10 @@ namespace SimplCommerce.QueryBuilder.Tests
             };
             var queryBuilder = new SearchQueryBuilder();
             var query = queryBuilder.GetQuery(searchOption);
+            query.ShouldContain(@"""should""");
             query.ShouldContain(@"""terms""");
             query.ShouldContain("\"categoryid\": [\r\n              \"11\",\r\n              \"123\"\r\n            ]\r\n");
+            query.ShouldContain("\"categoryparentid\": [\r\n              \"11\",\r\n              \"123\"\r\n            ]\r\n");
         }
 
         [TestMethod]
@@ -205,8 +207,11 @@ namespace SimplCommerce.QueryBuilder.Tests
             };
             var queryBuilder = new SearchQueryBuilder();
             var query = queryBuilder.GetQuery(searchOption);
+            query.ShouldContain(@"""should""");
             query.ShouldContain(@"""terms""");
             query.ShouldContain("\"categoryid\": [\r\n              \"11\"\r\n            ]\r\n");
+            query.ShouldContain("\"categoryparentid\": [\r\n              \"11\"\r\n            ]\r\n");
+
         }
 
         [TestMethod]
@@ -269,7 +274,7 @@ namespace SimplCommerce.QueryBuilder.Tests
             var searchOption = new SearchOption
             {
                 Brand = "14",
-                Category= "13586",
+                Category= "13606",
                 MaxPrice = 10000,
                 MinPrice = 10,
                 DateRange = 36,

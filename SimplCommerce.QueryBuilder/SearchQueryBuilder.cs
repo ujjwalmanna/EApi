@@ -25,11 +25,17 @@ namespace SimplCommerce.QueryBuilder
             }";
         const string DefaultQueryTemplate = @"""match_all"":{}";
 
-        const string MustQueryTemplate = @"""bool"":{
-                ""must"":[
+        const string BoolQueryTemplate = @"""bool"":{
+                                            <mustquery>
+                                            ,<shouldquery>
+                                         }";
+
+        const string MustQueryTemplate = @"""must"":[
                    <mustquery>
-                ]
-            }";
+                ]";
+        const string ShouldQueryTemplate = @"""should"":[
+                   <shouldquery>
+                ]";
 
         const string NumberRangeQueryTemplate = @"{
             ""range"": 
@@ -124,11 +130,13 @@ namespace SimplCommerce.QueryBuilder
         {
             var innerQuery = string.Empty;
             var mustQuery = GetMustQueryContent(option);
+            var shouldQuery = GetShouldQueryContent(option);
             if (!string.IsNullOrEmpty(mustQuery))
             {
-                var mustQueryTemplate = new Template(MustQueryTemplate);
-                mustQueryTemplate.Add("mustquery", mustQuery.Trim(','));
-                innerQuery = mustQueryTemplate.Render();
+                var boolQueryTemplate = new Template(BoolQueryTemplate);
+                boolQueryTemplate.Add("mustquery", mustQuery.Trim(','));
+                boolQueryTemplate.Add("shouldquery", shouldQuery.Trim(','));
+                innerQuery = boolQueryTemplate.Render();
             }
             else
             {
@@ -163,7 +171,22 @@ namespace SimplCommerce.QueryBuilder
         internal string GetMustQueryContent(SearchOption option)
         {
             var mustQuery = GeRangeQueryContent(option) + GetMatchPhraseQuery(option)+GetTermsQuery(option);
-            return mustQuery;
+            if (string.IsNullOrEmpty(mustQuery))
+                return mustQuery;
+            var mustQueryTemplate = new Template(MustQueryTemplate);
+            mustQueryTemplate.Add("mustquery", mustQuery.Trim(','));
+            return mustQueryTemplate.Render();
+        }
+
+        internal string GetShouldQueryContent(SearchOption option)
+        {
+            var shouldQuery = GetTermsQueryForCategory(option);
+            if (string.IsNullOrEmpty(shouldQuery))
+                return shouldQuery;
+
+            var shouldQueryTemplate = new Template(ShouldQueryTemplate);
+            shouldQueryTemplate.Add("shouldquery", shouldQuery.Trim(','));
+            return shouldQueryTemplate.Render();
         }
 
         internal string GeRangeQueryContent(SearchOption option)
@@ -216,15 +239,7 @@ namespace SimplCommerce.QueryBuilder
         internal string GetTermsQuery(SearchOption option)
         {
             string termsQuery = string.Empty;
-            if (!string.IsNullOrEmpty(option.Category?.Trim()))
-            {
-                List<string> categoryIds = option.Category.Split(',').Select(c => c).ToList();
-                var catIdToBeUsed = @"""" + categoryIds.Aggregate((a, b) => $@"{a}""" + "," + $@"""{b}") + @"""";
-                var termsQueryTemplate = new Template(TermsQueryTemplate);
-                termsQueryTemplate.Add("fieldname", "categoryid");
-                termsQueryTemplate.Add("fieldvalue", catIdToBeUsed);
-                termsQuery += termsQueryTemplate.Render();
-            }
+           
             if (!string.IsNullOrEmpty(option.Brand?.Trim()))
             {
                 List<string> brandIds = option.Brand.Split(',').Select(c => c).ToList();
@@ -235,6 +250,30 @@ namespace SimplCommerce.QueryBuilder
                 termsQueryTemplate.Add("fieldvalue", brandIdToBeUsed);
                 termsQuery += termsQueryTemplate.Render();
             }
+            return termsQuery;
+        }
+
+        internal string GetTermsQueryForCategory(SearchOption option)
+        {
+            string termsQuery = string.Empty;
+            if (!string.IsNullOrEmpty(option.Category?.Trim()))
+            {
+                List<string> categoryIds = option.Category.Split(',').Select(c => c).ToList();
+                var catIdToBeUsed = @"""" + categoryIds.Aggregate((a, b) => $@"{a}""" + "," + $@"""{b}") + @"""";
+                var termsQueryTemplate = new Template(TermsQueryTemplate);
+                termsQueryTemplate.Add("fieldname", "categoryid");
+                termsQueryTemplate.Add("fieldvalue", catIdToBeUsed);
+                termsQuery += termsQueryTemplate.Render();
+            }
+            if (!string.IsNullOrEmpty(option.Category?.Trim()))
+            {
+                List<string> categoryIds = option.Category.Split(',').Select(c => c).ToList();
+                var catIdToBeUsed = @"""" + categoryIds.Aggregate((a, b) => $@"{a}""" + "," + $@"""{b}") + @"""";
+                var termsQueryTemplate = new Template(TermsQueryTemplate);
+                termsQueryTemplate.Add("fieldname", "categoryparentid");
+                termsQueryTemplate.Add("fieldvalue", catIdToBeUsed);
+                termsQuery += termsQueryTemplate.Render();
+            }          
             return termsQuery;
         }
     }

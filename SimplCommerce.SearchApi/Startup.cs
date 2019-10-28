@@ -73,7 +73,7 @@ namespace SimplCommerce.SearchApi
             {
 
                 // To deploy on IIS
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SimplCommerce.SearchApi");
+                c.SwaggerEndpoint("/SearchApi/swagger/v1/swagger.json", "SimplCommerce.SearchApi");
 
 
             });
