@@ -28,6 +28,7 @@ namespace SimplCommerce.QueryBuilder
         const string BoolQueryTemplate = @"""bool"":{
                                             <mustquery>
                                             ,<shouldquery>
+                                            ,""minimum_should_match"": ""1""
                                          }";
 
         const string MustQueryTemplate = @"""must"":[

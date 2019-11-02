@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="SimplCommerce.Infrastructure">
+      <HintPath>..\..\..\..\..\..\..\Study\Practise-Learn\sample\practise\src\Modules\SimplCommerce.Module.Core\bin\Debug\netcoreapp2.1\SimplCommerce.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="SimplCommerce.Module.Catalog">
       <HintPath>..\..\..\..\..\..\..\Study\Practise-Learn\sample\practise\src\Modules\SimplCommerce.Module.Search\bin\Debug\netcoreapp2.1\SimplCommerce.Module.Catalog.dll</HintPath>
     </Reference>

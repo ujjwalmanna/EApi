@@ -41,6 +41,7 @@ namespace SimplCommerce.SearchApi
             }).AddPolicyHandler(httWaitAndpRetryPolicy);
 
             services.AddTransient(typeof(ISearchQueryBuilder), typeof(SearchQueryBuilder));
+            services.AddTransient(typeof(ISearchViewDetailQueryBuilder), typeof(SearchViewDetailQueryBuilder));
 
             services.AddLogging(loggingBuilder =>
             {
